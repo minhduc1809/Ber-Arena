@@ -50,9 +50,11 @@ model User {
   elo          Int      @default(1000)
   role         Role     @default(PLAYER)
 
-  // Multi-tenancy Guild Relation
-  guildId      String?
-  guild        Guild?   @relation(fields: [guildId], references: [id], onDelete: SetNull)
+  // Multi-tenancy Guild Relation & Cooldown Logic
+  guildId        String?
+  guild          Guild?    @relation(fields: [guildId], references: [id], onDelete: SetNull)
+  guildJoinedAt  DateTime? // Mốc 12 giờ mới được hưởng quyền lợi bang
+  guildLeftAt    DateTime? // Mốc phạt 24 giờ sau khi rời bang mới được vào bang khác
 
   // 1-to-1 Relation with Wallet
   wallet       Wallet?

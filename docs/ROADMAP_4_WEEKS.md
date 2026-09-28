@@ -43,9 +43,10 @@
 - **Nhiệm vụ**:
   - Cài đặt `@prisma/client`, `prisma`. Khởi tạo `prisma/schema.prisma`.
   - Định nghĩa models: `User`, `Guild`, `Wallet`, `AuctionItem`, `Bid`, `Match`, `OutboxEvent`.
+  - Thêm quy tắc chống trục lợi bang hội vào `User`: phạt 24h khi rời bang (`guildLeftAt`), 12h tập sự mới nhận quyền lợi (`guildJoinedAt`).
   - Bổ sung trường `version Int @default(0)` vào `Wallet` và `AuctionItem` phục vụ Optimistic Locking.
   - Đánh composite index tối ưu: `@@index([status, endTime])` trên `AuctionItem`, `@@index([status, createdAt])` trên `OutboxEvent`.
-  - Chạy `npx prisma migrate dev --name init_schema`.
+  - Chạy `npx prisma migrate dev`.
 - **Kiến thức & Khái niệm cần nắm**:
   - Database Normalization, Foreign Keys, Indexing (B-Tree, Composite Indexes).
   - Phân tích chi phí: Index Scan vs Full Table Scan.

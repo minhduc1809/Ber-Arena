@@ -28,7 +28,11 @@
 - **Hàng đợi ghép trận (Matchmaking)**: Tìm kiếm đối thủ theo chỉ số ELO tương đồng bằng Redis Sorted Set, tự động nới rộng khoảng ELO theo thời gian chờ.
 - **Chợ đấu giá (Auction House)**: Sàn niêm yết thẻ bài hiếm. Cơ chế đấu giá công khai cạnh tranh trực tiếp, hoàn tiền người bị vượt giá tức thì, chống bắn tỉa (Anti-Sniping).
 - **Tài chính & Ví (Wallet)**: Cấp sẵn **1.000 Vàng** khi đăng ký. Mọi giao dịch nạp/trừ tiền bảo đảm tính toàn vẹn (ACID), không bao giờ âm ví.
-- **Bang hội (Guild)**: Quản lý thành viên và quỹ bang hội theo mô hình Multi-tenancy RLS cách ly dữ liệu tuyệt đối.
+- **Bang hội (Guild)**: 
+  - Quản lý thành viên và quỹ bang hội theo mô hình Multi-tenancy RLS cách ly dữ liệu tuyệt đối.
+  - **Quy tắc chống trục lợi (Anti-Abuse)**:
+    - *Rời bang*: Bị phạt hồi chiêu **24 giờ** mới được phép xin vào bang mới (`guildLeftAt`).
+    - *Gia nhập bang*: Trải qua thời gian tập sự **12 giờ** mới được mở khóa các đặc quyền tài chính/buff của bang (`guildJoinedAt`).
 - **Xem lại trận đấu (Replay Engine)**: Tua lại từng nước đi chính xác 100% dựa trên Deterministic Input Simulation và Random Seed.
 
 ---

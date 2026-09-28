@@ -80,7 +80,10 @@
 
 *(Ghi chú các phát sinh, giải pháp kỹ thuật và các quyết định kiến trúc tại đây)*
 
-### [2026-09-28] - Khởi động dự án
-- Đã khởi tạo cấu trúc thư mục dự án NestJS backend.
-- Đã thiết lập tài liệu lộ trình 4 tuần tại [ROADMAP_4_WEEKS.md](file:///e:/Ber-Arena/docs/ROADMAP_4_WEEKS.md).
-- Chuẩn bị bước đầu tiên: **Bước 1.1 - Docker Compose**.
+### [2026-09-28] - Khởi động dự án, Hoàn thành Bước 1.1 & Bước 1.2
+- Đã khởi tạo cấu trúc Monorepo (`backend`, `frontend`, `docker`, `docs`).
+- **Bước 1.1**: Thiết lập `docker-compose.yml` với PostgreSQL 16 (port 5434), Redis 7 (port 6380), MongoDB 7 (port 27018) đều chạy healthy với persistent volumes.
+- **Bước 1.2**: Hoàn thành Prisma schema với các models chính (`User`, `Guild`, `Wallet`, `AuctionItem`, `Bid`, `Match`, `OutboxEvent`).
+- Đã tích hợp Optimistic Locking (`version`), Composite Index (`[status, endTime]`, `[status, createdAt]`).
+- Đã bổ sung 2 quy tắc game chống trục lợi bang hội: phạt 24h hồi chiêu khi rời bang (`guildLeftAt`) và 12h thử việc mới được nhận quyền lợi bang (`guildJoinedAt`).
+- Đã áp dụng migrations thành công vào PostgreSQL.
