@@ -1,0 +1,32 @@
+{
+  "name": "ber-arena",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ber-Arena - Real-time Turn-based Strategy Game & High-Concurrency Platform",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev:backend": "npm run start:dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "build:backend": "npm run build --workspace=backend",
+    "build:frontend": "npm run build --workspace=frontend",
+    "test:backend": "npm run test --workspace=backend",
+    "docker:up": "docker compose -f docker/docker-compose.yml up -d",
+    "docker:down": "docker compose -f docker/docker-compose.yml down"
+  },
+  "keywords": [
+    "ber-arena",
+    "nestjs",
+    "react",
+    "socketio",
+    "redis",
+    "postgres",
+    "mongodb",
+    "concurrency",
+    "fsm"
+  ],
+  "author": "MinhDuc189",
+  "license": "UNLICENSED"
+}

@@ -1,4 +1,4 @@
-# 🏆 CHRONO ARENA - KẾ HOẠCH THỰC THI CHI TIẾT 4 TUẦN (MASTER ROADMAP)
+# 🏆 BER-ARENA - KẾ HOẠCH THỰC THI CHI TIẾT 4 TUẦN (MASTER ROADMAP)
 
 > **Mô hình học & làm**: Micro-Tasking (< 50 dòng code / bước, hiểu bản chất 100%).  
 > **Thời lượng**: 4 tuần (28 ngày, 6 ngày làm việc + 1 ngày Review/Buffer mỗi tuần).  

@@ -1,0 +1,82 @@
+services:
+  # ============================================================================
+  # 1. POSTGRESQL 16 (Relational Database - ACID Transactions & Optimistic Lock)
+  # ============================================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: ber_arena_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgrespassword}
+      POSTGRES_DB: ${POSTGRES_DB:-ber_arena_db}
+    ports:
+      - "${POSTGRES_PORT:-5434}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-ber_arena_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - ber_arena_network
+
+  # ============================================================================
+  # 2. REDIS 7 (In-Memory Cache, Redlock, BullMQ, Socket.io Pub/Sub Adapter)
+  # ============================================================================
+  redis:
+    image: redis:7-alpine
+    container_name: ber_arena_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "${REDIS_PORT:-6380}:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    networks:
+      - ber_arena_network
+
+  # ============================================================================
+  # 3. MONGODB 7 (Event Sourcing - Deterministic Replay Storage)
+  # ============================================================================
+  mongodb:
+    image: mongo:7.0
+    container_name: ber_arena_mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE:-ber_arena_mongo}
+    ports:
+      - "${MONGO_PORT:-27018}:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - ber_arena_network
+
+# ==============================================================================
+# NETWORKS & VOLUMES (Data Persistence)
+# ==============================================================================
+networks:
+  ber_arena_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  mongo_data:
+    driver: local

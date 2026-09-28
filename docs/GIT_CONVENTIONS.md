@@ -1,9 +1,9 @@
-# 📜 QUY ƯỚC COMMIT CHUẨN MONOREPO (CHRONO ARENA COMMIT CONVENTION)
+# 📜 QUY ƯỚC COMMIT CHUẨN MONOREPO (BER-ARENA COMMIT CONVENTION)
 
-Để quản lý cả **Backend**, **Frontend**, **Hạ tầng (Infra)** và **Tài liệu (Docs)** trong cùng 1 Git Repository một cách chuyên nghiệp, dự án Chrono Arena áp dụng chuẩn **Conventional Commits** mở rộng cho mô hình Monorepo.
+Để quản lý cả **Backend**, **Frontend**, **Hạ tầng (Infra)** và **Tài liệu (Docs)** trong cùng 1 Git Repository một cách chuyên nghiệp, dự án Ber-Arena áp dụng chuẩn **Conventional Commits** mở rộng cho mô hình Monorepo.
 
 ---
-
+Ber-Arena
 ## 🏷️ CẤU TRÚC THÔNG ĐIỆP COMMIT (COMMIT MESSAGE FORMAT)
 
 ```text

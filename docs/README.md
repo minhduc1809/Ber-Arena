@@ -1,6 +1,6 @@
-# 📚 TÀI LIỆU DỰ ÁN CHRONO ARENA
+# 📚 TÀI LIỆU DỰ ÁN BER-ARENA
 
-Chào mừng bạn đến với trung tâm tài liệu và theo dõi tiến độ của dự án **Chrono Arena**.
+Chào mừng bạn đến với trung tâm tài liệu và theo dõi tiến độ của dự án **Ber-Arena**.
 
 ---
 

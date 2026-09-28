@@ -1,4 +1,4 @@
-# 📊 CHRONO ARENA - BẢNG THEO DÕI TIẾN ĐỘ THỰC THI (PROGRESS TRACKER)
+# 📊 BER-ARENA - BẢNG THEO DÕI TIẾN ĐỘ THỰC THI (PROGRESS TRACKER)
 
 > **Cập nhật lần cuối**: 2026-09-28  
 > **Trạng thái**:  
@@ -23,7 +23,7 @@
 
 | Ngày | Bước | Nhiệm vụ chính | Trạng thái | Commit đã tạo | Ghi chú & Kết quả Test |
 | :---: | :---: | :--- | :---: | :--- | :--- |
-| **Ngày 1** | **Bước 1.1** | Docker Compose đa dịch vụ & Healthcheck (Postgres, Mongo, Redis) | ⏳ PENDING | `feat(infra): setup docker-compose with postgres, mongo and redis` | |
+| **Ngày 1** | **Bước 1.1** | Docker Compose đa dịch vụ & Healthcheck (Postgres, Mongo, Redis) | 🔄 IN_PROGRESS | `feat(infra): setup docker-compose with postgres, mongo and redis` | Đang cấu hình và kiểm thử |
 | **Ngày 2** | **Bước 1.2** | Thiết lập Prisma, Migration & Indexing (Optimistic Lock & Composite Indexes) | ⏳ PENDING | `feat(db): define schema models with optimistic lock and composite indexes` | |
 | **Ngày 3** | **Bước 1.3** | Cài đặt Multi-tenancy với `nestjs-cls` & Prisma Extension | ⏳ PENDING | `feat(db): implement rls multi-tenancy extension via async-local-storage` | |
 | **Ngày 4** | **Bước 1.4** | Auth Module: JWT & Refresh Token Rotation với Redis Whitelist/Blacklist | ⏳ PENDING | `feat(auth): implement jwt auth with refresh token rotation and redis blacklist` | |

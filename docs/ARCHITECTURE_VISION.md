@@ -1,6 +1,6 @@
-# 🏛️ CHRONO ARENA - BẢN THIẾT KẾ KIẾN TRÚC & TẦM NHÌN KỸ THUẬT (TECHNICAL VISION & CORE PILLARS)
+# 🏛️ BER-ARENA - BẢN THIẾT KẾ KIẾN TRÚC & TẦM NHÌN KỸ THUẬT (TECHNICAL VISION & CORE PILLARS)
 
-> **Mục tiêu cốt lõi**: Chrono Arena không đơn thuần là một trò chơi giải trí, mà là một **hệ thống kiểm chuẩn năng lực Backend chuyên sâu (Enterprise Benchmark Platform)**. Dự án dùng bài toán Game chiến thuật thời gian thực và Sàn đấu giá triệu đô làm ngữ cảnh thực tế để giải quyết triệt để 5 bài toán hóc búa nhất trong kỹ thuật phần mềm phân tán.
+> **Mục tiêu cốt lõi**: Ber-Arena không đơn thuần là một trò chơi giải trí, mà là một **hệ thống kiểm chuẩn năng lực Backend chuyên sâu (Enterprise Benchmark Platform)**. Dự án dùng bài toán Game chiến thuật thời gian thực và Sàn đấu giá triệu đô làm ngữ cảnh thực tế để giải quyết triệt để 5 bài toán hóc búa nhất trong kỹ thuật phần mềm phân tán.
 
 ---
 
