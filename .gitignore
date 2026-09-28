@@ -1,0 +1,94 @@
+# ==============================================================================
+# CHRONO ARENA - MONOREPO ROOT .GITIGNORE
+# Bao quát toàn bộ: Backend (NestJS), Frontend (React/Vite), Docker & Docs
+# ==============================================================================
+
+# --- Dependencies ---
+node_modules/
+*/node_modules/
+package-lock.json.bak
+
+# --- Build Outputs ---
+dist/
+*/dist/
+dist-ssr/
+*/dist-ssr/
+build/
+*/build/
+out/
+*/out/
+
+# --- Environment & Secrets (TUYỆT ĐỐI KHÔNG PUSH) ---
+.env
+.env.*
+!.env.example
+*.env.local
+*/.env
+*/.env.*
+!*/.env.example
+
+# --- Logs & Runtime Data ---
+logs/
+*/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+pids/
+*.pid
+*.seed
+*.pid.lock
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# --- Testing & Code Coverage ---
+coverage/
+*/coverage/
+.nyc_output/
+junit.xml
+
+# --- Local Docker & Database Persistence Volumes ---
+# (Tránh push dữ liệu thực tế của Postgres, Redis, Mongo vào repo)
+docker/data/
+docker/postgres_data/
+docker/redis_data/
+docker/mongo_data/
+*.rdb
+
+# --- Temporary & Scratch Files ---
+.temp/
+.tmp/
+*/.temp/
+*/.tmp/
+scratch/
+.cache/
+
+# --- OS System Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# --- IDE & Editor Settings ---
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# VSCode (Chỉ giữ lại cấu hình đề xuất, bỏ các cài đặt cá nhân)
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
