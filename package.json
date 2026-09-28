@@ -13,6 +13,8 @@
     "build:backend": "npm run build --workspace=backend",
     "build:frontend": "npm run build --workspace=frontend",
     "test:backend": "npm run test --workspace=backend",
+    "db:migrate": "npm run prisma:migrate --workspace=backend",
+    "db:studio": "npm run prisma:studio --workspace=backend",
     "docker:up": "docker compose -f docker/docker-compose.yml up -d",
     "docker:down": "docker compose -f docker/docker-compose.yml down"
   },

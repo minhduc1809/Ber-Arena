@@ -11,11 +11,11 @@
 
 ## 📈 TỔNG QUAN TIẾN ĐỘ
 
-- **Sprint 1 (Tuần 1)**: `0 / 8 Tasks` (0%)
+- **Sprint 1 (Tuần 1)**: `2 / 8 Tasks` (25.0%)
 - **Sprint 2 (Tuần 2)**: `0 / 5 Tasks` (0%)
 - **Sprint 3 (Tuần 3)**: `0 / 7 Tasks` (0%)
 - **Sprint 4 (Tuần 4)**: `0 / 8 Tasks` (0%)
-- **Tổng tiến độ toàn dự án**: `0 / 28 Tasks` (**0%**)
+- **Tổng tiến độ toàn dự án**: `2 / 28 Tasks` (**7.1%**)
 
 ---
 
@@ -23,8 +23,8 @@
 
 | Ngày | Bước | Nhiệm vụ chính | Trạng thái | Commit đã tạo | Ghi chú & Kết quả Test |
 | :---: | :---: | :--- | :---: | :--- | :--- |
-| **Ngày 1** | **Bước 1.1** | Docker Compose đa dịch vụ & Healthcheck (Postgres, Mongo, Redis) | 🔄 IN_PROGRESS | `feat(infra): setup docker-compose with postgres, mongo and redis` | Đang cấu hình và kiểm thử |
-| **Ngày 2** | **Bước 1.2** | Thiết lập Prisma, Migration & Indexing (Optimistic Lock & Composite Indexes) | ⏳ PENDING | `feat(db): define schema models with optimistic lock and composite indexes` | |
+| **Ngày 1** | **Bước 1.1** | Docker Compose đa dịch vụ & Healthcheck (Postgres, Mongo, Redis) | ✅ COMPLETED | `feat(infra): setup docker-compose with postgres, mongo and redis` | 3 container Postgres, Redis, Mongo chạy healthy với volume persistence |
+| **Ngày 2** | **Bước 1.2** | Thiết lập Prisma, Migration & Indexing (Optimistic Lock & Composite Indexes) | ✅ COMPLETED | `feat(db): define schema models with optimistic lock and composite indexes` | Đã khởi tạo schema, migration SQL và composite indexes thành công |
 | **Ngày 3** | **Bước 1.3** | Cài đặt Multi-tenancy với `nestjs-cls` & Prisma Extension | ⏳ PENDING | `feat(db): implement rls multi-tenancy extension via async-local-storage` | |
 | **Ngày 4** | **Bước 1.4** | Auth Module: JWT & Refresh Token Rotation với Redis Whitelist/Blacklist | ⏳ PENDING | `feat(auth): implement jwt auth with refresh token rotation and redis blacklist` | |
 | **Ngày 5** | **Bước 1.5** | RoleGuard & Decorator RBAC (`PLAYER`, `MODERATOR`, `ADMIN`) | ⏳ PENDING | `feat(auth): add roles decorator and rbac guard` | |

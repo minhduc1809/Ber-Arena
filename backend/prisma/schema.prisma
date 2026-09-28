@@ -1,0 +1,199 @@
+// ==============================================================================
+// PRISMA CONFIGURATION & DATASOURCE
+// ==============================================================================
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==============================================================================
+// ENUMS
+// ==============================================================================
+enum Role {
+  PLAYER
+  MODERATOR
+  ADMIN
+}
+
+enum AuctionStatus {
+  PENDING
+  ACTIVE
+  ENDED
+  CANCELLED
+}
+
+enum MatchStatus {
+  WAITING
+  IN_PROGRESS
+  FINISHED
+  CANCELLED
+}
+
+enum OutboxStatus {
+  PENDING
+  PUBLISHED
+  FAILED
+}
+
+// ==============================================================================
+// 1. USER & AUTHENTICATION
+// ==============================================================================
+model User {
+  id           String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  elo          Int      @default(1000)
+  role         Role     @default(PLAYER)
+
+  // Multi-tenancy Guild Relation
+  guildId      String?
+  guild        Guild?   @relation(fields: [guildId], references: [id], onDelete: SetNull)
+
+  // 1-to-1 Relation with Wallet
+  wallet       Wallet?
+
+  // Relations with Auction & Bids
+  createdAuctions AuctionItem[] @relation("SellerRelation")
+  wonAuctions     AuctionItem[] @relation("HighestBidderRelation")
+  bids            Bid[]
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([elo])
+}
+
+// ==============================================================================
+// 2. GUILD (Multi-tenancy RLS Tenant)
+// ==============================================================================
+model Guild {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  goldFund    Int      @default(0)
+
+  // Members of the guild
+  members     User[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==============================================================================
+// 3. WALLET (ACID Transactions & Optimistic Locking)
+// ==============================================================================
+model Wallet {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  goldBalance Int      @default(1000)
+
+  // OPTIMISTIC LOCKING: Cột version tự tăng mỗi khi trừ/nạp tiền.
+  // Nếu 2 request cùng lúc cố trừ tiền, chỉ 1 request có version khớp được thành công.
+  version     Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==============================================================================
+// 4. AUCTION ITEM (Chợ đấu giá, Anti-Sniping & Concurrency)
+// ==============================================================================
+model AuctionItem {
+  id              String        @id @default(uuid())
+  title           String
+  description     String?
+  startingPrice   Int
+  currentBid      Int
+  minBidStep      Int           @default(10)
+  status          AuctionStatus @default(ACTIVE)
+
+  startTime       DateTime      @default(now())
+  endTime         DateTime
+
+  // Quan hệ người bán & người trả giá cao nhất hiện tại
+  sellerId        String
+  seller          User          @relation("SellerRelation", fields: [sellerId], references: [id])
+
+  highestBidderId String?
+  highestBidder   User?         @relation("HighestBidderRelation", fields: [highestBidderId], references: [id])
+
+  // OPTIMISTIC LOCKING: Chống Lost Update khi 50 người cùng bid vào 1 giây cuối
+  version         Int           @default(0)
+
+  bids            Bid[]
+
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  // COMPOSITE INDEX: Tối ưu hóa truy vấn các phiên đang ACTIVE và sắp đến hạn endTime.
+  // Tránh việc Postgres phải duyệt toàn bộ bảng (Full Table Scan).
+  @@index([status, endTime])
+}
+
+// ==============================================================================
+// 5. BID (Lịch sử từng lượt đặt giá)
+// ==============================================================================
+model Bid {
+  id            String      @id @default(uuid())
+  auctionItemId String
+  auctionItem   AuctionItem @relation(fields: [auctionItemId], references: [id], onDelete: Cascade)
+
+  bidderId      String
+  bidder        User        @relation(fields: [bidderId], references: [id])
+
+  amount        Int
+  createdAt     DateTime    @default(now())
+
+  @@index([auctionItemId, amount(sort: Desc)])
+}
+
+// ==============================================================================
+// 6. MATCH (Lưu trạng thái trận đấu cờ 4x5)
+// ==============================================================================
+model Match {
+  id          String      @id @default(uuid())
+  playerAId   String
+  playerBId   String
+  status      MatchStatus @default(WAITING)
+  winnerId    String?
+
+  eloDelta    Int         @default(25)
+  rewardGold  Int         @default(50)
+  randomSeed  Int
+
+  startedAt   DateTime    @default(now())
+  endedAt     DateTime?
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([playerAId])
+  @@index([playerBId])
+}
+
+// ==============================================================================
+// 7. OUTBOX EVENT (Transactional Outbox Pattern - Triệt tiêu Dual-Write)
+// ==============================================================================
+model OutboxEvent {
+  id            String       @id @default(uuid())
+  aggregateType String       // 'MATCH', 'AUCTION', 'WALLET'
+  aggregateId   String
+  eventType     String       // 'MATCH_FINISHED', 'BID_PLACED'
+  payload       Json         // Dữ liệu chi tiết của sự kiện
+
+  status        OutboxStatus @default(PENDING)
+  retryCount    Int          @default(0)
+  errorReason   String?
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  // COMPOSITE INDEX: Worker quét nhanh các sự kiện PENDING xếp theo thời gian tạo
+  @@index([status, createdAt])
+}
