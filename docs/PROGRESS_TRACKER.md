@@ -25,7 +25,7 @@
 | :---: | :---: | :--- | :---: | :--- | :--- |
 | **Ngày 1** | **Bước 1.1** | Docker Compose đa dịch vụ & Healthcheck (Postgres, Mongo, Redis) | ✅ COMPLETED | `feat(infra): setup docker-compose with postgres, mongo and redis` | 3 container Postgres, Redis, Mongo chạy healthy với volume persistence |
 | **Ngày 2** | **Bước 1.2** | Thiết lập Prisma, Migration & Indexing (Optimistic Lock & Composite Indexes) | ✅ COMPLETED | `feat(db): define schema models with optimistic lock and composite indexes` | Đã khởi tạo schema, migration SQL và composite indexes thành công |
-| **Ngày 3** | **Bước 1.3** | Cài đặt Multi-tenancy với `nestjs-cls` & Prisma Extension | ⏳ PENDING | `feat(db): implement rls multi-tenancy extension via async-local-storage` | |
+| **Ngày 3** | **Bước 1.3** | Cài đặt Multi-tenancy với `nestjs-cls` & Prisma Extension | 🔄 IN_PROGRESS | `feat(db): implement rls multi-tenancy extension via async-local-storage` | Đang cài đặt nestjs-cls và Prisma Client Extension |
 | **Ngày 4** | **Bước 1.4** | Auth Module: JWT & Refresh Token Rotation với Redis Whitelist/Blacklist | ⏳ PENDING | `feat(auth): implement jwt auth with refresh token rotation and redis blacklist` | |
 | **Ngày 5** | **Bước 1.5** | RoleGuard & Decorator RBAC (`PLAYER`, `MODERATOR`, `ADMIN`) | ⏳ PENDING | `feat(auth): add roles decorator and rbac guard` | |
 | **Ngày 6** | **Bước 1.6** | Ví tiền: Giao dịch nạp/trừ tiền an toàn với Optimistic Locking | ⏳ PENDING | `feat(wallet): implement safe balance updates using optimistic locking` | |
