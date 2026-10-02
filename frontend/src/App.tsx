@@ -4,6 +4,7 @@ import { GameBoard } from './components/GameBoard';
 import { AuctionHouse } from './components/AuctionHouse';
 import { GuildDashboard } from './components/GuildDashboard';
 import { AuthModal } from './components/AuthModal';
+import { GravityStarsBackground } from '@/components/animate-ui/components/backgrounds/gravity-stars';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<'arena' | 'auction' | 'guild'>('arena');
@@ -51,19 +52,34 @@ export function App() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* Thanh điều hướng Navbar */}
-      <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        user={user}
-        goldBalance={goldBalance}
-        onOpenAuth={() => setIsAuthOpen(true)}
-        onLogout={handleLogout}
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+      {/* Background hiệu ứng Gravity Stars */}
+      <GravityStarsBackground
+        className="absolute inset-0 flex items-center justify-center rounded-xl"
+        starsCount={90}
+        starsSize={2}
+        starsOpacity={0.85}
+        glowIntensity={18}
+        movementSpeed={0.35}
+        mouseInfluence={160}
+        mouseGravity="attract"
+        gravityStrength={65}
       />
 
+      {/* Thanh điều hướng Navbar */}
+      <div style={{ position: 'relative', zIndex: 50 }}>
+        <Navbar
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          user={user}
+          goldBalance={goldBalance}
+          onOpenAuth={() => setIsAuthOpen(true)}
+          onLogout={handleLogout}
+        />
+      </div>
+
       {/* Nội dung chính theo Tab */}
-      <main style={{ flex: 1 }}>
+      <main style={{ flex: 1, position: 'relative', zIndex: 10 }}>
         {activeTab === 'arena' && <GameBoard />}
         {activeTab === 'auction' && (
           <AuctionHouse goldBalance={goldBalance} onPlaceBid={handlePlaceBid} />
@@ -85,6 +101,8 @@ export function App() {
         borderTop: '1px solid var(--border-dim)',
         color: 'var(--text-dim)',
         fontSize: '0.75rem',
+        position: 'relative',
+        zIndex: 10,
       }}>
         BER-ARENA © 2026 — Kiến trúc Hệ thống Phân tán, Server-Authoritative FSM & Concurrency Benchmark
       </footer>
