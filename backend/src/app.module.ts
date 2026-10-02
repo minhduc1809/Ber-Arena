@@ -12,6 +12,8 @@ import { GuildContextMiddleware } from './common/middleware/guild-context.middle
       middleware: { mount: true },
     }),
     DatabaseModule,
+    RedisModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

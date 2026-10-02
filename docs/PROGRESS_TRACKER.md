@@ -11,11 +11,11 @@
 
 ## 📈 TỔNG QUAN TIẾN ĐỘ
 
-- **Sprint 1 (Tuần 1)**: `2 / 8 Tasks` (25.0%)
+- **Sprint 1 (Tuần 1)**: `4 / 8 Tasks` (50.0%)
 - **Sprint 2 (Tuần 2)**: `0 / 5 Tasks` (0%)
 - **Sprint 3 (Tuần 3)**: `0 / 7 Tasks` (0%)
 - **Sprint 4 (Tuần 4)**: `0 / 8 Tasks` (0%)
-- **Tổng tiến độ toàn dự án**: `2 / 28 Tasks` (**7.1%**)
+- **Tổng tiến độ toàn dự án**: `4 / 28 Tasks` (**14.3%**)
 
 ---
 
@@ -25,8 +25,8 @@
 | :---: | :---: | :--- | :---: | :--- | :--- |
 | **Ngày 1** | **Bước 1.1** | Docker Compose đa dịch vụ & Healthcheck (Postgres, Mongo, Redis) | ✅ COMPLETED | `feat(infra): setup docker-compose with postgres, mongo and redis` | 3 container Postgres, Redis, Mongo chạy healthy với volume persistence |
 | **Ngày 2** | **Bước 1.2** | Thiết lập Prisma, Migration & Indexing (Optimistic Lock & Composite Indexes) | ✅ COMPLETED | `feat(db): define schema models with optimistic lock and composite indexes` | Đã khởi tạo schema, migration SQL và composite indexes thành công |
-| **Ngày 3** | **Bước 1.3** | Cài đặt Multi-tenancy với `nestjs-cls` & Prisma Extension | 🔄 IN_PROGRESS | `feat(db): implement rls multi-tenancy extension via async-local-storage` | Đang cài đặt nestjs-cls và Prisma Client Extension |
-| **Ngày 4** | **Bước 1.4** | Auth Module: JWT & Refresh Token Rotation với Redis Whitelist/Blacklist | ⏳ PENDING | `feat(auth): implement jwt auth with refresh token rotation and redis blacklist` | |
+| **Ngày 3** | **Bước 1.3** | Cài đặt Multi-tenancy với `nestjs-cls` & Prisma Extension | ✅ COMPLETED | `feat(db): implement rls multi-tenancy extension via async-local-storage` | Đã cấu hình ClsService AsyncLocalStorage và Prisma RLS extension tự động lọc |
+| **Ngày 4** | **Bước 1.4** | Auth Module: JWT & Refresh Token Rotation với Redis Whitelist/Blacklist | ✅ COMPLETED | `feat(auth): implement jwt auth with refresh token rotation and redis blacklist` | Đã hoàn thành AuthService, Redis token hash, Token Rotation, Reuse Detection và tích hợp Swagger |
 | **Ngày 5** | **Bước 1.5** | RoleGuard & Decorator RBAC (`PLAYER`, `MODERATOR`, `ADMIN`) | ⏳ PENDING | `feat(auth): add roles decorator and rbac guard` | |
 | **Ngày 6** | **Bước 1.6** | Ví tiền: Giao dịch nạp/trừ tiền an toàn với Optimistic Locking | ⏳ PENDING | `feat(wallet): implement safe balance updates using optimistic locking` | |
 | **Ngày 7** | **Bước 1.7** | Chợ đấu giá: Idempotency Key & Redis Distributed Lock | ⏳ PENDING | `feat(auction): add idempotency guard and redis distributed lock` | |
@@ -80,10 +80,8 @@
 
 *(Ghi chú các phát sinh, giải pháp kỹ thuật và các quyết định kiến trúc tại đây)*
 
-### [2026-09-28] - Khởi động dự án, Hoàn thành Bước 1.1 & Bước 1.2
-- Đã khởi tạo cấu trúc Monorepo (`backend`, `frontend`, `docker`, `docs`).
-- **Bước 1.1**: Thiết lập `docker-compose.yml` với PostgreSQL 16 (port 5434), Redis 7 (port 6380), MongoDB 7 (port 27018) đều chạy healthy với persistent volumes.
-- **Bước 1.2**: Hoàn thành Prisma schema với các models chính (`User`, `Guild`, `Wallet`, `AuctionItem`, `Bid`, `Match`, `OutboxEvent`).
-- Đã tích hợp Optimistic Locking (`version`), Composite Index (`[status, endTime]`, `[status, createdAt]`).
-- Đã bổ sung 2 quy tắc game chống trục lợi bang hội: phạt 24h hồi chiêu khi rời bang (`guildLeftAt`) và 12h thử việc mới được nhận quyền lợi bang (`guildJoinedAt`).
-- Đã áp dụng migrations thành công vào PostgreSQL.
+### [2026-09-28 -> 2026-10-02] - Hoàn thành Bước 1.1, 1.2, 1.3 & 1.4
+- **Bước 1.1**: Thiết lập `docker-compose.yml` (PostgreSQL 16, Redis 7, MongoDB 7).
+- **Bước 1.2**: Hoàn thành Prisma schema với các models chính (`User`, `Guild`, `Wallet`, `AuctionItem`, `Bid`, `Match`, `OutboxEvent`). Tích hợp Optimistic Locking và Composite Indexes.
+- **Bước 1.3**: Hoàn thành Multi-tenancy RLS với `nestjs-cls` (AsyncLocalStorage) và Prisma Extension tự động lọc dữ liệu theo `guildId`.
+- **Bước 1.4**: Xây dựng Auth Module hoàn chỉnh với Access Token (15m) + HttpOnly Cookie Refresh Token (7d). Tích hợp Redis Token Hash, cơ chế Refresh Token Rotation và Reuse Detection (chống Token Theft). Tự động tạo ví tặng 1.000 Vàng khi đăng ký mới. Tích hợp Swagger OpenAPI UI tại `/api/docs`.
