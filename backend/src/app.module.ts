@@ -3,6 +3,8 @@ import { ClsModule } from 'nestjs-cls';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
+import { RedisModule } from './common/redis/redis.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { GuildContextMiddleware } from './common/middleware/guild-context.middleware';
 
 @Module({
