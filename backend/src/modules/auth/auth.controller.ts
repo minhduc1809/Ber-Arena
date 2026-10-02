@@ -1,4 +1,5 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
@@ -61,6 +62,25 @@ export class AuthController {
     await this.authService.logout(refreshToken);
     res.clearCookie('refreshToken');
     return { message: 'Đăng xuất thành công' };
+  }
+
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
+  @ApiOperation({ summary: 'Chuyển hướng đăng nhập bằng tài khoản Google' })
+  async googleAuth() {
+    // Passport tự động redirect tới trang đăng nhập Google
+  }
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  @ApiOperation({ summary: 'Callback xử lý đăng nhập Google OAuth & cấp phát token' })
+  async googleAuthCallback(@Req() req: any, @Res({ passthrough: true }) res: Response) {
+    const result = await this.authService.handleGoogleLogin(req.user);
+    this.setRefreshTokenCookie(res, result.refreshToken);
+    return {
+      accessToken: result.accessToken,
+      user: result.user,
+    };
   }
 
   private setRefreshTokenCookie(res: Response, token: string) {

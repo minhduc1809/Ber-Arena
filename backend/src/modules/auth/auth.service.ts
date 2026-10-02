@@ -65,11 +65,71 @@ export class AuthService {
       throw new UnauthorizedException('Thông tin đăng nhập không chính xác');
     }
 
+    if (!user.passwordHash) {
+      throw new UnauthorizedException('Tài khoản này được đăng ký qua Google. Vui lòng chọn Đăng nhập bằng Google');
+    }
+
     const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Thông tin đăng nhập không chính xác');
     }
 
+    return this.generateTokens(user);
+  }
+
+  /**
+   * Xác thực hoặc tự động tạo tài khoản khi đăng nhập qua Google OAuth
+   */
+  async validateOrCreateGoogleUser(profile: { googleId: string; email: string; displayName: string; avatar?: string }) {
+    let user = await this.prisma.user.findFirst({
+      where: { OR: [{ googleId: profile.googleId }, { email: profile.email }] },
+    });
+
+    if (user) {
+      if (!user.googleId) {
+        user = await this.prisma.user.update({
+          where: { id: user.id },
+          data: { googleId: profile.googleId, avatar: user.avatar || profile.avatar },
+        });
+      }
+      return user;
+    }
+
+    // Xử lý tạo username duy nhất từ displayName
+    let username = profile.displayName.toLowerCase().replace(/[^a-z0-9_]/g, '');
+    if (username.length < 3) username = `player_${Math.floor(1000 + Math.random() * 9000)}`;
+    const existingUsername = await this.prisma.user.findUnique({ where: { username } });
+    if (existingUsername) {
+      username = `${username}_${Math.floor(1000 + Math.random() * 9000)}`;
+    }
+
+    // Tạo đồng thời User và cấp sẵn 1.000 Vàng trong Wallet
+    return this.prisma.$transaction(async (tx) => {
+      const newUser = await tx.user.create({
+        data: {
+          username,
+          email: profile.email,
+          googleId: profile.googleId,
+          avatar: profile.avatar,
+        },
+      });
+
+      await tx.wallet.create({
+        data: {
+          userId: newUser.id,
+          goldBalance: 1000,
+          version: 0,
+        },
+      });
+
+      return newUser;
+    });
+  }
+
+  /**
+   * Tạo token sau khi Google OAuth callback thành công
+   */
+  async handleGoogleLogin(user: any) {
     return this.generateTokens(user);
   }
 
