@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { RedisModule } from './common/redis/redis.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { WalletModule } from './modules/wallet/wallet.module';
 import { GuildContextMiddleware } from './common/middleware/guild-context.middleware';
 
 @Module({
@@ -16,6 +17,7 @@ import { GuildContextMiddleware } from './common/middleware/guild-context.middle
     DatabaseModule,
     RedisModule,
     AuthModule,
+    WalletModule,
   ],
   controllers: [AppController],
   providers: [AppService],
