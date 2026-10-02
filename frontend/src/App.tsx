@@ -37,7 +37,7 @@ export function App() {
 
   const handleLogout = async () => {
     try {
-      await fetch('/auth/logout', { method: 'POST' });
+      await fetch('/auth/logout', { method: 'POST', credentials: 'include' });
     } catch {
       // Bỏ qua lỗi mạng khi logout
     }

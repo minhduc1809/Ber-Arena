@@ -211,7 +211,8 @@ body {
 }
 
 /* Interactive Glowing Tactical Buttons */
-.tactical-btn {
+.tactical-btn,
+.glow-btn {
   background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(157, 78, 221, 0.15));
   border: 1px solid var(--neon-cyan);
   color: #fff;

@@ -148,8 +148,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
         ) : (
-          <button className="glow-btn" onClick={onOpenAuth}>
-            ĐĂNG NHẬP / ĐĂNG KÝ
+          <button className="tactical-btn" onClick={onOpenAuth}>
+            🔑 ĐĂNG NHẬP / ĐĂNG KÝ
           </button>
         )}
       </div>

@@ -21,7 +21,12 @@ async function bootstrap() {
 
   // Cho phép CORS với credentials để gửi nhận Cookie từ Frontend
   app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: [
+      'http://localhost:5173',
+      'http://127.0.0.1:5173',
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+    ],
     credentials: true,
   });
 
@@ -36,7 +41,7 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   const port = process.env.PORT ?? 3000;
-  await app.listen(port);
+  await app.listen(port, '0.0.0.0');
   console.log(`🚀 Ber-Arena Backend đang chạy tại: http://localhost:${port}`);
   console.log(`📖 Swagger API Docs tại: http://localhost:${port}/api`);
 }
