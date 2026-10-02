@@ -1,12 +1,18 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Role } from '@prisma/client';
 import type { Request, Response } from 'express';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { RolesGuard } from '../../common/guards/roles.guard';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 
 @ApiTags('Auth - Xác thực & Quản lý phiên')
+@ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -81,6 +87,25 @@ export class AuthController {
       accessToken: result.accessToken,
       user: result.user,
     };
+  }
+
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Lấy thông tin người dùng hiện tại từ JWT Access Token' })
+  @ApiResponse({ status: 200, description: 'Thông tin tài khoản và vai trò' })
+  @ApiResponse({ status: 401, description: 'Chưa xác thực hoặc token hết hạn' })
+  async getMe(@CurrentUser() user: any) {
+    return { user };
+  }
+
+  @Get('admin')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  @ApiOperation({ summary: 'Endpoint chỉ dành cho Admin (Kiểm thử RBAC RoleGuard)' })
+  @ApiResponse({ status: 200, description: 'Truy cập thành công quyền Admin' })
+  @ApiResponse({ status: 403, description: 'Bị từ chối quyền truy cập (Forbidden)' })
+  async adminOnly(@CurrentUser() user: any) {
+    return { message: 'Chào mừng Admin!', user };
   }
 
   private setRefreshTokenCookie(res: Response, token: string) {
