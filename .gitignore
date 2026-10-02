@@ -63,6 +63,9 @@ docker/mongo_data/
 */.tmp/
 scratch/
 .cache/
+powershell.bat
+powershell.cmd
+Claude-Code-Game-Studios/
 
 # --- OS System Files ---
 .DS_Store
